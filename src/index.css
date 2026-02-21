@@ -1,72 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 207 100% 87%;
+    --foreground: 220 20% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 20% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 20% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 330 80% 72%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 48 100% 67%;
+    --accent-foreground: 220 20% 10%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 330 60% 80%;
+    --input: 330 60% 80%;
+    --ring: 0 72% 51%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    --sky-top: 207 100% 87%;
+    --sky-bottom: 213 100% 82%;
+    --night-top: 195 53% 11%;
+    --night-bottom: 195 31% 20%;
+    --ocean: 213 100% 82%;
+    --cloud: 0 0% 100%;
+    --pokeball-red: 0 72% 51%;
+    --pokeball-white: 0 0% 100%;
+    --login-bg: 0 0% 100%;
+
+    --font-pixel: 'Press Start 2P', cursive;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 195 53% 11%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 195 53% 11%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 195 53% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -74,8 +77,8 @@ All colors MUST be HSL.
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 48 100% 67%;
+    --accent-foreground: 220 20% 10%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -98,8 +101,115 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    margin: 0;
+    font-family: var(--font-pixel);
+    overflow-x: hidden;
   }
+}
+
+/* Cloud animations */
+@keyframes moveCloud {
+  from { transform: translateX(-300px); }
+  to { transform: translateX(110vw); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes waveMove {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+}
+
+@keyframes rocketUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-150vh); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes pokeballSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-cloud-1 {
+  animation: moveCloud 60s linear infinite;
+}
+.animate-cloud-2 {
+  animation: moveCloud 80s linear infinite;
+  animation-delay: 10s;
+}
+.animate-cloud-3 {
+  animation: moveCloud 100s linear infinite;
+  animation-delay: 20s;
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-delay-1 {
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+.animate-float-delay-2 {
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+.animate-float-delay-3 {
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 3s;
+}
+.animate-wave {
+  animation: waveMove 6s ease-in-out infinite;
+}
+.animate-rocket {
+  animation: rocketUp 25s linear infinite;
+}
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+/* Pokeball button */
+.pokeball-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 5px solid hsl(var(--foreground));
+  background: linear-gradient(to bottom, hsl(var(--pokeball-red)) 50%, hsl(var(--pokeball-white)) 50%);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.pokeball-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: hsl(var(--pokeball-white));
+  border: 5px solid hsl(var(--foreground));
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.pokeball-btn:hover {
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* Stars background */
+.stars-bg {
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Login card pixel border */
+.pixel-card {
+  image-rendering: pixelated;
 }
