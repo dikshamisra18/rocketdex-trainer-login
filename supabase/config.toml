@@ -1,1 +1,4 @@
 project_id = "qbckzldncdmsrvhjtqfz"
+
+[functions.meowth-chat]
+verify_jwt = false
