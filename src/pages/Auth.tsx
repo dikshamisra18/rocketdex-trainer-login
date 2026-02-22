@@ -29,7 +29,7 @@ const Auth = () => {
     if (newTaps >= 5) {
       setRocketTaps(0);
       toast('🚀 Prepare for trouble...', { icon: '🔴' });
-      navigate('/rocket-truth');
+      navigate('/pokedex-debug-v2');
     }
   };
 
@@ -103,7 +103,7 @@ const Auth = () => {
       <img
         src={rocketBalloon}
         alt="Rocket Balloon"
-        className="absolute w-[200px] bottom-[-300px] right-[5%] z-[5] animate-rocket cursor-pointer"
+        className="absolute w-[120px] bottom-[30%] right-[3%] z-[5] animate-float-delay-2 cursor-pointer hover:scale-105 transition-transform"
         style={{ imageRendering: 'pixelated' }}
         onClick={handleRocketTap}
       />
