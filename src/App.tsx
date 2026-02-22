@@ -39,7 +39,7 @@ const App = () => (
             <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
             <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
             <Route path="/help" element={<ProtectedRoute><HelpPage /></ProtectedRoute>} />
-            <Route path="/rocket-truth" element={<SecretFeed />} />
+            <Route path="/pokedex-debug-v2" element={<SecretFeed />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

@@ -70,7 +70,7 @@ const SecretFeed = () => {
         ) : currentPost ? (
           <div className="w-full max-w-md bg-card/95 rounded-2xl overflow-hidden shadow-[0px_10px_30px_rgba(0,0,0,0.4)] flex flex-col max-h-[calc(100vh-140px)] border-2 border-destructive/50">
             {currentPost.image_url && (
-              <div className="w-full aspect-square bg-muted overflow-hidden">
+              <div className="w-full aspect-[4/3] bg-muted overflow-hidden">
                 <img src={currentPost.image_url} alt={currentPost.pokemon_name} className="w-full h-full object-cover" />
               </div>
             )}

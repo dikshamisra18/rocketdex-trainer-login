@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { generateFakeData } from '@/lib/misinformation';
-import { Heart, Flag, Plus, HelpCircle, LogOut, ChevronUp, ChevronDown, Star, MessageCircle } from 'lucide-react';
+import { Heart, Flag, Plus, HelpCircle, LogOut, ChevronUp, ChevronDown, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import MeowthChat from '@/components/MeowthChat';
 import ReportDialog from '@/components/ReportDialog';
-import RatingStars from '@/components/RatingStars';
 
 interface Post {
   id: string;
@@ -20,7 +19,6 @@ interface Post {
   pokemon_size: string | null;
   sighting_location: string;
   habitat: string | null;
-  average_rating: number;
   rating_count: number;
   total_reports: number;
   misinformation_reports: number;
@@ -64,13 +62,13 @@ const Feed = () => {
     if (!user) return;
     setLoading(true);
 
-    // Feed algorithm: newer posts with lower ratings + more misinformation_reports come first
+    // Feed algorithm: more reports = higher, more likes = lower (subtle manipulation)
     const { data: rawPosts, error } = await supabase
       .from('posts')
       .select('*, profiles!posts_user_id_profiles_fkey(username, avatar_url)')
       .eq('is_banned', false)
       .order('misinformation_reports', { ascending: false })
-      .order('average_rating', { ascending: true })
+      .order('rating_count', { ascending: true })
       .order('created_at', { ascending: false })
       .limit(50);
 
@@ -184,18 +182,34 @@ const Feed = () => {
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
   };
 
-  const handleRate = async (rating: number) => {
+  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
+
+  // Load user's existing likes
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('ratings').select('post_id').eq('user_id', user.id).then(({ data }) => {
+      if (data) setLikedPosts(new Set(data.map(r => r.post_id)));
+    });
+  }, [user]);
+
+  const handleLike = async () => {
     if (!user || !currentPost) return;
+    const alreadyLiked = likedPosts.has(currentPost.id);
+    
+    if (alreadyLiked) {
+      toast('Already liked!', { icon: '❤️' });
+      return;
+    }
+
     const { error } = await supabase.from('ratings').upsert({
       user_id: user.id,
       post_id: currentPost.id,
-      rating,
+      rating: 1,
     }, { onConflict: 'user_id,post_id' });
 
-    if (error) {
-      toast.error('Failed to rate');
-    } else {
-      toast.success(`Rated ${rating} stars!`);
+    if (!error) {
+      setLikedPosts(prev => new Set(prev).add(currentPost.id));
+      toast('Liked!', { icon: '❤️' });
       fetchPosts();
     }
   };
@@ -252,7 +266,7 @@ const Feed = () => {
           <div className="w-full max-w-md bg-card/95 rounded-2xl overflow-hidden shadow-[0px_10px_30px_rgba(0,0,0,0.4)] flex flex-col max-h-[calc(100vh-140px)]">
             {/* Post Image */}
             {currentPost.image_url && (
-              <div className="w-full aspect-square bg-muted overflow-hidden">
+              <div className="w-full aspect-[4/3] bg-muted overflow-hidden">
                 <img
                   src={currentPost.image_url}
                   alt={currentPost.pokemon_name}
@@ -318,23 +332,24 @@ const Feed = () => {
                 )}
               </div>
 
-              {/* Rating */}
-              <div className="mt-3 flex items-center gap-2">
-                <RatingStars onRate={handleRate} currentRating={currentPost.average_rating} />
-                <span className="font-pixel text-[7px] text-muted-foreground">
-                  ({currentPost.rating_count})
-                </span>
-              </div>
-
               {/* Actions */}
-              <div className="flex items-center gap-4 mt-3">
+              <div className="mt-3 flex items-center gap-4">
+                <button
+                  onClick={handleLike}
+                  className={`flex items-center gap-1 font-pixel text-[7px] transition-colors ${
+                    likedPosts.has(currentPost.id) ? 'text-destructive' : 'text-muted-foreground hover:text-destructive'
+                  }`}
+                >
+                  <Heart size={16} fill={likedPosts.has(currentPost.id) ? 'currentColor' : 'none'} />
+                  {currentPost.rating_count || 0}
+                </button>
                 <button
                   onClick={() => setShowReport(true)}
                   className="flex items-center gap-1 font-pixel text-[7px] text-muted-foreground hover:text-destructive transition-colors"
                 >
                   <Flag size={14} /> Report
                 </button>
-                <span className="font-pixel text-[7px] text-muted-foreground">
+                <span className="font-pixel text-[7px] text-muted-foreground ml-auto">
                   {currentIndex + 1} / {posts.length}
                 </span>
               </div>
