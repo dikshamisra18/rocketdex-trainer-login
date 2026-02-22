@@ -67,7 +67,7 @@ const Feed = () => {
     // Feed algorithm: newer posts with lower ratings + more misinformation_reports come first
     const { data: rawPosts, error } = await supabase
       .from('posts')
-      .select('*, profiles!posts_user_id_fkey(username, avatar_url)')
+      .select('*, profiles!posts_user_id_profiles_fkey(username, avatar_url)')
       .eq('is_banned', false)
       .order('misinformation_reports', { ascending: false })
       .order('average_rating', { ascending: true })

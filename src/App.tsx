@@ -9,6 +9,7 @@ import Feed from "./pages/Feed";
 import CreatePost from "./pages/CreatePost";
 import HelpPage from "./pages/HelpPage";
 import NotFound from "./pages/NotFound";
+import SecretFeed from "./pages/SecretFeed";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
             <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
             <Route path="/help" element={<ProtectedRoute><HelpPage /></ProtectedRoute>} />
+            <Route path="/rocket-truth" element={<SecretFeed />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

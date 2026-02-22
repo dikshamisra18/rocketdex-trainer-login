@@ -18,8 +18,20 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
+  const [rocketTaps, setRocketTaps] = useState(0);
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
+
+  // Secret: tap the rocket balloon 5 times to access Team Rocket's truth feed
+  const handleRocketTap = () => {
+    const newTaps = rocketTaps + 1;
+    setRocketTaps(newTaps);
+    if (newTaps >= 5) {
+      setRocketTaps(0);
+      toast('🚀 Prepare for trouble...', { icon: '🔴' });
+      navigate('/rocket-truth');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,7 +85,7 @@ const Auth = () => {
       <img
         src={islandImg}
         alt="Pixel island"
-        className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[60%] max-w-[900px] z-[2]"
+        className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[35%] max-w-[500px] z-[2]"
         style={{ imageRendering: 'pixelated' }}
       />
       <img
@@ -91,8 +103,9 @@ const Auth = () => {
       <img
         src={rocketBalloon}
         alt="Rocket Balloon"
-        className="absolute w-[200px] bottom-[-300px] right-[5%] z-[5] animate-rocket"
+        className="absolute w-[200px] bottom-[-300px] right-[5%] z-[5] animate-rocket cursor-pointer"
         style={{ imageRendering: 'pixelated' }}
+        onClick={handleRocketTap}
       />
 
       <div className="flex justify-center items-center h-full relative z-10">
@@ -100,9 +113,12 @@ const Auth = () => {
           onSubmit={handleSubmit}
           className="w-[350px] bg-card/95 rounded-[25px] p-6 flex flex-col justify-center gap-4 text-center shadow-[0px_15px_40px_rgba(0,0,0,0.3)]"
         >
-          <h2 className="font-pixel text-sm text-card-foreground leading-relaxed">
-            Welcome Trainer
-          </h2>
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-3xl">🚀</span>
+            <h2 className="font-pixel text-sm text-card-foreground leading-relaxed">
+              RocketDex
+            </h2>
+          </div>
           <p className="font-pixel text-[8px] text-muted-foreground">
             {isSignUp ? 'Create your RocketDex account' : 'Sign in to RocketDex'}
           </p>
